@@ -16,9 +16,10 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/event_track"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World 2!"
+        android:text="Track Event!"
         />
 
 </LinearLayout>
