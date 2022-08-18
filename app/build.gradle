@@ -16,10 +16,18 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'Heebakhan27'
+            storeFile file('myKey')
+            storePassword 'Heebakhan27'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,6 +55,19 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
+    implementation("com.moengage:rich-notification:3.1.1")
+    implementation("com.moengage:inbox-ui:2.1.1")
+    implementation("com.moengage:realtime-trigger:2.1.1")
+    implementation("com.moengage:push-amp:4.1.1")
+    implementation("com.moengage:geofence-android-12:1.1.1-a12")
+    implementation('com.google.android.gms:play-services-location:19.0.1')
+    implementation("com.moengage:inapp:6.2.0")
+
+
+
+
+
+
 
 
 

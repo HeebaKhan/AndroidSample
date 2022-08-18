@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidSample</string>
+        <string name="moe_inbox_notification_title">Default Inbox</string>
 </resources>
+

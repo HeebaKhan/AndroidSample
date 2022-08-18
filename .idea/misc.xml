@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable-anydpi-v24/ic_stat_name.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/list.xml" value="0.1" />
       </map>
     </option>
   </component>

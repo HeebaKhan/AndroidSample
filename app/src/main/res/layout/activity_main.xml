@@ -22,4 +22,25 @@
         android:text="Track Event!"
         />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/default_inbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Default Notification Center!"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fetch_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch Messages!"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout Time"
+        />
+
 </LinearLayout>
