@@ -8,6 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.moengage.widgets.NudgeView
+        android:id="@+id/my_nudge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </com.moengage.widgets.NudgeView>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login"
         android:layout_width="wrap_content"
@@ -37,10 +43,20 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/selfHandledinApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout Time"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout Time"
         />
+
+
 
 </LinearLayout>

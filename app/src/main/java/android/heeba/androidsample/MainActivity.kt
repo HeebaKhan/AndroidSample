@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.moengage.core.MoECoreHelper
@@ -15,16 +16,24 @@ import com.moengage.core.Properties
 import com.moengage.core.analytics.MoEAnalyticsHelper
 import com.moengage.core.model.GeoLocation
 import com.moengage.inapp.MoEInAppHelper
+import com.moengage.inapp.listeners.SelfHandledAvailableListener
+import com.moengage.inapp.model.SelfHandledCampaignData
 import com.moengage.inbox.core.MoEInboxHelper
 import com.moengage.inbox.core.listener.OnMessagesAvailableListener
 import com.moengage.inbox.core.model.InboxData
 import com.moengage.inbox.ui.view.InboxActivity
+import com.moengage.widgets.NudgeView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var nudge :NudgeView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        nudge = findViewById(R.id.my_nudge)
+
         MoEAnalyticsHelper.trackDeviceLocale(applicationContext)
         val loginButton = findViewById<AppCompatButton>(R.id.login)
         loginButton.setOnClickListener() {
@@ -78,26 +87,41 @@ class MainActivity : AppCompatActivity() {
             MoECoreHelper.logoutUser(this)
         }
 
+
+        val selfHandledInApp  = findViewById<AppCompatButton>(R.id.selfHandledinApp)
+        logOutButton.setOnClickListener() {
+            MoEInAppHelper.getInstance().getSelfHandledInApp(this@MainActivity, object: SelfHandledAvailableListener{
+                override fun onSelfHandledAvailable(data: SelfHandledCampaignData?) {
+                Log.d("self handled data", "self handled - ${data?.campaign}")
+                }
+            } )
+            //   MoECoreHelper.logoutUser(this)
+        }
 //Checking for permission
 
 
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(
-                arrayOf(ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION),
-                100
-            )
-        }
+//        if (ContextCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            requestPermissions(
+//                arrayOf(ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION),
+//                100
+//            )
+//        }
+
 
 
     }
 
     override fun onStart() {
         super.onStart()
-        MoEInAppHelper.getInstance().showInApp(applicationContext)
+        nudge.initialiseNudgeView(this)
+
+        // MoEInAppHelper.getInstance().showInApp(applicationContext)
+
+
     }
 
     override fun onRequestPermissionsResult(
