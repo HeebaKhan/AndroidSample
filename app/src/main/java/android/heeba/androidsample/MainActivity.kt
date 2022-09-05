@@ -11,6 +11,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import com.moengage.cards.core.MoECardHelper
+import com.moengage.cards.core.listener.NewCardCountAvailableListener
+import com.moengage.cards.core.listener.SyncCompleteListener
+import com.moengage.cards.core.listener.UnClickedCountListener
+import com.moengage.cards.core.model.Card
+import com.moengage.cards.core.model.NewCardCountData
+import com.moengage.cards.core.model.SyncCompleteData
+import com.moengage.cards.core.model.UnClickedCountData
+import com.moengage.cards.ui.CardActivity
 import com.moengage.core.MoECoreHelper
 import com.moengage.core.Properties
 import com.moengage.core.analytics.MoEAnalyticsHelper
@@ -27,7 +36,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var nudge :NudgeView
+    lateinit var nudge: NudgeView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,15 +97,50 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val selfHandledInApp  = findViewById<AppCompatButton>(R.id.selfHandledinApp)
+        val selfHandledInApp = findViewById<AppCompatButton>(R.id.selfHandledinApp)
         logOutButton.setOnClickListener() {
-            MoEInAppHelper.getInstance().getSelfHandledInApp(this@MainActivity, object: SelfHandledAvailableListener{
-                override fun onSelfHandledAvailable(data: SelfHandledCampaignData?) {
-                Log.d("self handled data", "self handled - ${data?.campaign}")
-                }
-            } )
+            MoEInAppHelper.getInstance()
+                .getSelfHandledInApp(this@MainActivity, object : SelfHandledAvailableListener {
+                    override fun onSelfHandledAvailable(data: SelfHandledCampaignData?) {
+                        Log.d("self handled data", "self handled - ${data?.campaign}")
+                    }
+                })
             //   MoECoreHelper.logoutUser(this)
         }
+
+        val openCards = findViewById<AppCompatButton>(R.id.cards)
+        openCards.setOnClickListener() {
+            val intent = Intent(this, CardActivity::class.java)
+            startActivity(intent)
+
+        }
+
+        val cardCount = findViewById<AppCompatButton>(R.id.cardCount)
+        cardCount.setOnClickListener() {
+        MoECardHelper.getUnClickedCardCountAsync(this, object : UnClickedCountListener {
+            override fun onCountAvailable(data: UnClickedCountData?) {
+                Log.d("data unclicked count", data?.count.toString())
+            }
+        })
+        MoECardHelper.getNewCardCountAsync(this, object : NewCardCountAvailableListener {
+            override fun onCountAvailable(newCardCountData: NewCardCountData?) {
+                Log.d("new card count", newCardCountData?.count.toString())
+            }
+        })
+    }
+
+        MoEInAppHelper.getInstance().getSelfHandledInApp(this, object : SelfHandledAvailableListener {
+            override fun onSelfHandledAvailable(data: SelfHandledCampaignData?) {
+                Log.d("BgTag", "${data?.campaign?.payload} self handled payload")
+            }
+        })
+
+        MoECardHelper.setSyncCompleteListener(object : SyncCompleteListener {
+            override fun onSyncComplete(data: SyncCompleteData?) {
+                Log.d("sync listener", data.toString())
+            }
+        })
+
 //Checking for permission
 
 
@@ -110,7 +154,6 @@ class MainActivity : AppCompatActivity() {
 //                100
 //            )
 //        }
-
 
 
     }

@@ -9,6 +9,12 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
+import com.moengage.cards.core.MoECardHelper
+import com.moengage.cards.core.listener.SyncCompleteListener
+import com.moengage.cards.core.model.SyncCompleteData
+import com.moengage.cards.ui.MoECardUiHelper
+import com.moengage.cards.ui.listener.OnCardClickListener
+import com.moengage.cards.ui.model.ClickData
 import com.moengage.core.*
 import com.moengage.core.analytics.MoEAnalyticsHelper
 import com.moengage.core.config.*
@@ -18,6 +24,8 @@ import com.moengage.core.model.AppStatus
 import com.moengage.firebase.MoEFireBaseHelper
 import com.moengage.firebase.listener.NonMoEngagePushListener
 import com.moengage.inapp.MoEInAppHelper
+import com.moengage.inapp.listeners.SelfHandledAvailableListener
+import com.moengage.inapp.model.SelfHandledCampaignData
 import com.moengage.pushbase.MoEPushHelper
 import com.moengage.pushbase.listener.TokenAvailableListener
 import com.moengage.pushbase.model.Token
@@ -44,6 +52,7 @@ class MyApplication : Application() {
                     optOutActivities = null
                 )
             ).configureInApps(InAppConfig(optOutActivities = null))
+            .configureCards(CardConfig(R.drawable.download,-1, CARD_CONFIG_DEFAULT_DATE_FORMAT, true))
             .build()
 
 
@@ -51,6 +60,19 @@ class MyApplication : Application() {
         MoEngage.initialiseDefaultInstance(moEngage)
         MoEInAppHelper.getInstance().addInAppLifeCycleListener(InAppListener())
         MoEPushHelper.getInstance().registerMessageListener(CustomPushListener())
+        MoECardHelper.setSyncCompleteListener(object: SyncCompleteListener {
+            override fun onSyncComplete(data: SyncCompleteData?) {
+                Log.d("onSyncComplete", "data is synced $data")
+            }
+        })
+        MoECardUiHelper.setClickListener(object : OnCardClickListener{
+            override fun onCardClick(clickData: ClickData): Boolean {
+                Log.d("Sync Data", "card is clicked $clickData")
+                return false //handled by app if true and if false, then handled  by SDK.
+            }
+        } )
+
+
 
         MoEFireBaseHelper.getInstance().addTokenListener(object : TokenAvailableListener {
             override fun onTokenAvailable(token: Token) {
@@ -67,7 +89,7 @@ class MyApplication : Application() {
         enableAdIdTracking(this)
         MoECoreHelper.addAppBackgroundListener(object : AppBackgroundListener {
             override fun onAppBackground(context: Context, data: AppBackgroundData) {
-                Log.d("BgTag", "App is in background")
+                Log.d("BgTag", "self handled in app data ${data}")
             }
 
         })

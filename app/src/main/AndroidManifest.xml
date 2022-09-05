@@ -34,6 +34,12 @@
                 <!-- note that the leading "/" is required for pathPrefix -->
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.moengage.cards.ui.CardActivity"
+            android:label="@string/moe_card_feed_title"
+            android:theme="@style/MoECardTheme.NoActionBar"/>
+
         <service android:name=".MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>

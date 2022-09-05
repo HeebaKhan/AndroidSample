@@ -46,9 +46,22 @@
         android:id="@+id/selfHandledinApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout Time"
+        android:text="self handled in app"
         />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cards "
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cardCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Card Count "
+        />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/logOut"
